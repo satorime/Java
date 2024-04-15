@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,20 +115,52 @@ public class HelloApplication extends Application {
             public void handle(ActionEvent actionEvent) {
                 String username = tfUsername.getText();
                 String password = pfPassword.getText();
-                for (User user : users) {
-                    if (username.equals(user.username) && password.equals(user.password)) {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
-                        try {
-                            Scene scene = new Scene(loader.load());
-                            stage.setScene(scene);
-                            stage.show();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                try(Connection c = MySQLConnection.getConnection();
+                    Statement statement = c.createStatement()){
+
+                    String selectQuery = "SELECT * FROM users";
+                    ResultSet result = statement.executeQuery(selectQuery);
+
+                    while(result.next()){
+                        if(result.getString("username").equals(username) && result.getString("password").equals(password)){
+                            System.out.println("Success");
+                            actionTarget.setText("Log In Successfully");
+                            actionTarget.setOpacity(1);
                         }
                     }
+                }catch(SQLException e){
+                    e.printStackTrace();
                 }
-                actionTarget.setText("Invalid username/password");
-                actionTarget.setOpacity(1);
+            }
+        });
+
+        Button btnRegister = new Button("Register");
+        btnRegister.setFont(Font.font(45));
+        HBox hbRegister = new HBox();
+        hbRegister.getChildren().add(btnRegister);
+        hbRegister.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(hbRegister, 0, 3, 2, 1);
+
+        btnRegister.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                try(Connection c = MySQLConnection.getConnection();
+                    PreparedStatement statement = c.prepareStatement("INSERT INTO tbluserpass (username, password) VALUES (?, ?)")){
+                    String username = tfUsername.getText();
+                    String password = pfPassword.getText();
+
+                    statement.setString(1, username);
+                    statement.setString(2, password);
+                    int rowsInserted = statement.executeUpdate();
+                    if(rowsInserted > 0){
+                        System.out.println("Data inserted successfully!");
+                        actionTarget.setText("Registered");
+                        actionTarget.setOpacity(1);
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
             }
         });
 
