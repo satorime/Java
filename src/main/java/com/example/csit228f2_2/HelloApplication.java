@@ -21,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.sql.RowSet;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public class HelloApplication extends Application {
     public static List<User> users;
+
     public static void main(String[] args) {
         launch();
     }
@@ -82,15 +84,15 @@ public class HelloApplication extends Application {
         tfPassword.setVisible(false);
         grid.add(hbShow, 2, 2);
 
-        btnShow.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent actionEvent) {
-                tfPassword.setText(pfPassword.getText());
-                tfPassword.setVisible(true);
-                pfPassword.setVisible(false);
-                grid.add(new Button("Hello"), 4,4);
-            }
-        });
+//        btnShow.setOnMousePressed(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent actionEvent) {
+//                tfPassword.setText(pfPassword.getText());
+//                tfPassword.setVisible(true);
+//                pfPassword.setVisible(false);
+//                grid.add(new Button("Hello"), 4,4);
+//            }
+//        });
 
         btnShow.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
@@ -106,59 +108,72 @@ public class HelloApplication extends Application {
         hbSignIn.getChildren().add(btnSignIn);
         hbSignIn.setAlignment(Pos.CENTER);
         grid.add(hbSignIn, 0, 3, 2, 1);
-        final Text actionTarget = new Text("Hi");
+        final Text actionTarget = new Text("");
         actionTarget.setFont(Font.font(30));
         grid.add(actionTarget, 1, 6);
 
-        btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String username = tfUsername.getText();
-                String password = pfPassword.getText();
-                try(Connection c = MySQLConnection.getConnection();
-                    Statement statement = c.createStatement()){
+        btnSignIn.setOnAction(event -> {
+            String username = tfUsername.getText();
+            String password = pfPassword.getText();
 
-                    String selectQuery = "SELECT * FROM users";
-                    ResultSet result = statement.executeQuery(selectQuery);
+            try (Connection c = MySQLConnection.getConnection();
+                 PreparedStatement statement = c.prepareStatement("SELECT * FROM bitayodb WHERE username = ? AND password = ?")) {
+                statement.setString(1, username);
+                statement.setString(2, password);
 
-                    while(result.next()){
-                        if(result.getString("username").equals(username) && result.getString("password").equals(password)){
-                            System.out.println("Success");
-                            actionTarget.setText("Log In Successfully");
-                            actionTarget.setOpacity(1);
+                try (ResultSet result = statement.executeQuery()) {
+                    if (result.next()) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+                        try {
+                            Scene scene = new Scene(loader.load());
+                            stage.setScene(scene);
+                            stage.show();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
+                        actionTarget.setText("Log In Successfully");
+                        actionTarget.setOpacity(1);
+                    } else {
+                        actionTarget.setText("Invalid username or password");
+                        actionTarget.setOpacity(1);
                     }
-                }catch(SQLException e){
-                    e.printStackTrace();
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
+
 
         Button btnRegister = new Button("Register");
         btnRegister.setFont(Font.font(45));
         HBox hbRegister = new HBox();
         hbRegister.getChildren().add(btnRegister);
         hbRegister.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(hbRegister, 0, 3, 2, 1);
+        grid.add(hbRegister, 0, 4, 2, 1);
 
         btnRegister.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                try (Connection c = MySQLConnection.getConnection();
+                     PreparedStatement statement = c.prepareStatement("INSERT INTO bitayodb (username, password) VALUES (?, ?)")) {
 
-                try(Connection c = MySQLConnection.getConnection();
-                    PreparedStatement statement = c.prepareStatement("INSERT INTO tbluserpass (username, password) VALUES (?, ?)")){
                     String username = tfUsername.getText();
                     String password = pfPassword.getText();
 
-                    statement.setString(1, username);
-                    statement.setString(2, password);
-                    int rowsInserted = statement.executeUpdate();
-                    if(rowsInserted > 0){
-                        System.out.println("Data inserted successfully!");
-                        actionTarget.setText("Registered");
+                    if (!username.isEmpty() || !password.isEmpty()) {
+                        statement.setString(1, username);
+                        statement.setString(2, password);
+                        int rowsInserted = statement.executeUpdate();
+                        if (rowsInserted > 0) {
+                            System.out.println("Data inserted successfully!");
+                            actionTarget.setText("Registered");
+                            actionTarget.setOpacity(1);
+                        }
+                    } else {
+                        actionTarget.setText("No username or pass, bobo!");
                         actionTarget.setOpacity(1);
                     }
-                }catch(SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
