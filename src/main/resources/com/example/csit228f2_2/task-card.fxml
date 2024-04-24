@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- TaskCard.fxml -->
+
+<VBox prefHeight="160" prefWidth="280" spacing="5" style="-fx-background-color: #f0f0f0; -fx-padding: 10px; -fx-border-color: #ccc; -fx-border-width: 1px; -fx-border-radius: 5px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.TaskCardController">
+    <Label fx:id="taskCardTitle" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Task Title" />
+    <Label fx:id="taskCardContent" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+    <HBox alignment="CENTER" prefHeight="29.0" prefWidth="197.0" spacing="5">
+        <Button fx:id="ediTaskButton" onAction="#handleEditTask" style="-fx-padding: 5; -fx-border-radius: 5; -fx-border-color: #337ab7; -fx-background-color: #337ab7; -fx-text-fill: #fff; -fx-cursor: hand;" text="Edit">
+            <effect>
+                <DropShadow color="#337ab7" offsetX="2" offsetY="2" radius="5" />
+            </effect>
+        </Button>
+        <Button fx:id="deleteTaskButton" onAction="#handleDeleteTask" style="-fx-padding: 5; -fx-border-radius: 5; -fx-border-color: #337ab7; -fx-background-color: #337ab7; -fx-text-fill: #fff; -fx-cursor: hand;" text="Delete">
+            <effect>
+                <DropShadow color="#337ab7" offsetX="2" offsetY="2" radius="5" />
+            </effect>
+        </Button>
+    </HBox>
+</VBox>

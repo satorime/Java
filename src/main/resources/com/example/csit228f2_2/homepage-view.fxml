@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400" prefWidth="600" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228f2_2.HomePageController">
+
+    <!-- Side Tab -->
+    <left>
+        <VBox alignment="CENTER" prefHeight="400.0" prefWidth="149.0" spacing="10" style="-fx-background-color: #337ab7; -fx-padding: 10;">
+            <VBox prefHeight="50" spacing="10">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10" />
+                </padding>
+                <Label fx:id="currentUserUName" style="-fx-text-fill: #fff; -fx-font-size: 16; -fx-font-weight: bold;" />
+                <Label fx:id="currentUserEmail" style="-fx-text-fill: #fff; -fx-font-size: 14;" />
+            </VBox>
+            <VBox alignment="CENTER" prefWidth="200" spacing="10" VBox.vgrow="ALWAYS">
+                <Button fx:id="editProfileButton" onAction="#handleEditProfile" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #fff; -fx-background-color: #fff; -fx-text-fill: #337ab7; -fx-cursor: hand;" text="Edit Profile">
+                    <effect>
+                        <DropShadow color="#337ab7" offsetX="2" offsetY="2" radius="5" />
+                    </effect>
+                </Button>
+                <Button fx:id="logoutButton" onAction="#handleLogout" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #fff; -fx-background-color: #fff; -fx-text-fill: #337ab7; -fx-cursor: hand;" text="Log Out">
+                    <effect>
+                        <DropShadow color="#337ab7" offsetX="2" offsetY="2" radius="5" />
+                    </effect>
+                </Button>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <padding>
+                    <Insets top="10.0" />
+                </padding>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <GridPane alignment="CENTER" hgap="10" prefWidth="200" style="-fx-padding: 20;" vgap="10">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333;" text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="taskCardTitleField" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #ccc; -fx-background-color: #fff;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+            <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333;" text="Content:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextArea fx:id="taskCardContentField" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #ccc; -fx-background-color: #fff;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+
+            <HBox alignment="CENTER" spacing="20" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                <Button fx:id="createTaskButton" onAction="#createTask" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #337ab7; -fx-background-color: #337ab7; -fx-text-fill: #fff; -fx-cursor: hand;" text="Create Task">
+                    <effect>
+                        <DropShadow color="#337ab7" offsetX="2" offsetY="2" radius="5" />
+                    </effect>
+                </Button>
+                <Button fx:id="displayTasksButton" onAction="#displayUserTasks" style="-fx-padding: 10; -fx-border-radius: 5;-fx-border-color: #337ab7; -fx-background-color: #337ab7; -fx-text-fill: #fff; -fx-cursor: hand;" text="Display Tasks">
+                    <effect>
+                        <DropShadow color="#337ab7" offsetX="2" offsetY="2" radius="5" />
+                    </effect>
+                </Button>
+            </HBox>
+            <columnConstraints>
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+
+        </GridPane>
+    </center>
+
+    <right>
+        <ScrollPane prefHeight="400.0" prefWidth="209.0" style="-fx-background-color: #fff;" vbarPolicy="ALWAYS">
+            <!-- Content to be scrolled -->
+            <VBox fx:id="tasksContainer" style="-fx-background-color: #fff; -fx-padding: 10;" VBox.vgrow="ALWAYS">
+
+            </VBox>
+        </ScrollPane>
+    </right>
+
+</BorderPane>

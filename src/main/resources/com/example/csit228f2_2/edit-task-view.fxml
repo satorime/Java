@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.csit228f2_2.EditTaskController"
+      prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;">
+    <GridPane hgap="10" vgap="10" alignment="CENTER" style="-fx-padding: 20;">
+        <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+        <TextField fx:id="editTaskTitleField" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #ccc; -fx-background-color: #fff;"/>
+        <Label text="Content:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+        <TextArea fx:id="editTaskContentField" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #ccc; -fx-background-color: #fff;"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Save Changes" fx:id="submitEditTask" onAction="#handleSubmitEditTask" style="-fx-padding: 10; -fx-border-radius: 5; -fx-border-color: #337ab7; -fx-background-color: #337ab7; -fx-text-fill: #fff; -fx-cursor: hand;">
+            <effect>
+                <DropShadow offsetX="2" offsetY="2" radius="5" color="#337ab7"/>
+            </effect>
+        </Button>
+    </HBox>
+</VBox>
